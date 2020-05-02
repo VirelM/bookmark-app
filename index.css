@@ -1,0 +1,92 @@
+body{
+    padding: 10px;
+}
+
+header{
+    margin-left: 30px;
+}
+
+.newBookmark{
+    width: 55%;
+}
+.newBookmark i{
+    float: right;
+}
+section select{
+    width: 40%;
+}
+ul{
+    list-style-type: none;
+}
+
+.bookmarksList li{
+    border: 1px solid black;
+}
+
+.bookmarksList{
+    padding-left: 0;
+}
+
+.bookmarkTitle{
+    border: 1px solid black;
+    margin-top: 0;
+    padding-left: 5px;
+}
+
+.bookmarkTitle button{
+    float: right;
+    margin-right: 5px;
+}
+
+li span{
+    float: right;
+}
+
+.visit{
+    width: 60%;
+    margin-left: 40px;
+    margin-right: 10px;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.description{
+    padding-left: 10px;
+}
+
+.rating{
+    padding-left: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+form{
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.inputUrl{
+    width: 80%;
+}
+
+.inputTitle{
+    width: 80%;
+}
+
+.addDescription{
+    width: 80%;
+    height: 300px;
+}
+
+.div{
+    border: 1px solid black;
+}
+
+.containerBtn{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.button{
+    width: 35%;
+}
