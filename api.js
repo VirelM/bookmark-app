@@ -6,9 +6,6 @@ function listApiFetch(...args) {
     let error;
     return fetch(...args)
         .then(res => {
-        if(res.ok){
-            console.log(store.items);
-        }
         if (!res.ok) {
           // Valid HTTP response but non-2xx status - let's create an error!
             error = { code: res.status };
@@ -41,7 +38,6 @@ function createItem(title,url,description,rating){
         "rating":rating
     };
     let newItemString = JSON.stringify(newItem);
-    console.log(store.items);
     return listApiFetch(BASE_URL,{
         method:'POST',
         headers: new Headers({'Content-Type': 'application/json'}),
@@ -59,6 +55,7 @@ function updateItem(id, updateData) {
 };
 
 function deleteItem(id) {
+    console.log(id);
     return listApiFetch(`${BASE_URL}/bookmarks/${id}`,{
         method:'DELETE',
         headers: new Headers({'Content-Type': 'application/json'})

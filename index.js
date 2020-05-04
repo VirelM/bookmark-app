@@ -12,6 +12,7 @@ const main = function () {
   });
   bookmarks.bindEventListeners();
   bookmarks.render();
+  console.log(store.items);
 };
 
 $(main);

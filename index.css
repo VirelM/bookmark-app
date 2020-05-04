@@ -38,10 +38,6 @@ ul{
     margin-right: 5px;
 }
 
-li span{
-    float: right;
-}
-
 .visit{
     width: 60%;
     margin-left: 40px;
@@ -89,4 +85,13 @@ form{
 
 .button{
     width: 35%;
+}
+
+.expand2{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.hidden{
+    display: none;
 }

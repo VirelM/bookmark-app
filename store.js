@@ -12,7 +12,7 @@ function findAndUpdate(id, newData){
     Object.assign(currentItem, newData);
 };
 
-function additem(item){
+function addItem(item){
     this.items.push(item);
 }
 
@@ -36,7 +36,7 @@ export default{
     filter,
     findById,
     findAndUpdate,
-    additem,
+    addItem,
     findAndDelete,
     toggleAdding,
     setError
