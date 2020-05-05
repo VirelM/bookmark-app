@@ -1,5 +1,6 @@
 let items = [];
 let adding = false;
+let expanded = false;
 let error = null;
 let filter = 0;
 
@@ -32,6 +33,7 @@ function setError(error) {
 export default{
     items,
     adding,
+    expanded,
     error,
     filter,
     findById,

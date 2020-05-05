@@ -28,7 +28,7 @@ const generateBookmarkItemsString = function (bookmarks) {
 
 function render(){
     let items = [...store.items];
-    if(store.filter > 0){
+    if(store.filter === 1){
         items = items.filter(item => 1 == item.rating);
         
     }
@@ -41,11 +41,45 @@ function render(){
     
 }
 
-function filterB(){
-    $('select').change(function(){
-        store.filter = $('select option:selected').val();
+// function render2(){
+//     let filterby = filterD();
+//     let items = store.items;
+//     let itemsF = items.filter(item => filterby === item.rating);
+//     const bookmarkListItemsString = generateBookmarkItemsString(itemsF);
+//     $('.bookmarksList').html(bookmarkListItemsString);
+// }
+
+// function filterB(){
+//     $('select').change(function(){
+//         store.filter = $('select option:selected').val();
+//         console.log(store.filter);
+//     })
+//     render();
+// }
+
+// function filterC(){
+//     $('main').on('click','select', function(event){
+//         console.log(event.currentTarget);
+//         let filterby = $('select option:selected').val();
+//         console.log(filterby);
+//         console.log(store.items.filter(item => item.rating === filterby));
+//         return store.items.filter(item => item.rating === filterby)
+//     })
+// }
+
+// function selectChange(val){
+//     $('selectForm').submit();
+//     console.log($('selectForm').submit().val());
+//     return $('selectForm').submit().val()
+// }
+
+function filterD(){
+    $('select').on('change', function() {
+        store.filter = this.value;
+        console.log(store.filter);
+        render();
+        return this.value 
     })
-    render();
 }
 
 function newBookmarkClick(){
@@ -125,8 +159,7 @@ function getItemIdFromElement(item){
 };
 
 function getItemIdFromParentElement(item){
-    console.log($(item).parent().parent().data('item-id'));
-    return $(item).parent().parent().data('item-id');
+    return $(item).closest('.js-expand').data('item-id');
 };
 
 function expand(id){
@@ -139,9 +172,9 @@ function handleItemExpansion() {
         const id = getItemIdFromElement(event.currentTarget)
         let item = store.findById(id);
         expand(id);
-        // api.updateItem(id, {expansion: !item.checked})
+        // api.updateItem(id, {expanded: !item.checked})
         //     .then(() => {
-        //         store.findAndUpdate(id, {expansion: !item.expansion});
+        //         store.findAndUpdate(id, {expanded: !item.expansion});
         //         render();
         //     })
         //     .catch(err => {
@@ -175,8 +208,11 @@ function bindEventListeners(){
     handleNewItemSubmit();
     handleItemExpansion();
     handleDeleteItemClicked();
-    filterB();
-}
+    //filterB();
+    //filterC;
+    //selectChange();
+    filterD();
+}   
 export default{
     bindEventListeners,
     render

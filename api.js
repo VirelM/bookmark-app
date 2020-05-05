@@ -34,10 +34,11 @@ function createItem(title,url,description,rating){
     let newItem = {
         "title": title,
         "url":url,
-        "description":description,
+        "desc":description,
         "rating":rating
     };
     let newItemString = JSON.stringify(newItem);
+    console.log(newItem);
     return listApiFetch(BASE_URL,{
         method:'POST',
         headers: new Headers({'Content-Type': 'application/json'}),
@@ -47,7 +48,7 @@ function createItem(title,url,description,rating){
 
 
 function updateItem(id, updateData) {
-    return listApiFetch(`${BASE_URL}/bookmarks/${id}`,{
+    return listApiFetch(`${BASE_URL}/${id}`,{
         method: 'PATCH',
         headers: new Headers({'Content-Type': 'application/json'}),
         body: JSON.stringify(updateData)
@@ -55,8 +56,7 @@ function updateItem(id, updateData) {
 };
 
 function deleteItem(id) {
-    console.log(id);
-    return listApiFetch(`${BASE_URL}/bookmarks/${id}`,{
+    return listApiFetch(`${BASE_URL}/${id}`,{
         method:'DELETE',
         headers: new Headers({'Content-Type': 'application/json'})
     }) 
