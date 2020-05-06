@@ -26,13 +26,42 @@ const generateBookmarkItemsString = function (bookmarks) {
     return bookmarksAll.join('');
 };
 
-function render(){
-    let items = [...store.items];
-    if(store.filter === 1){
-        items = items.filter(item => 1 == item.rating);
-        
+const generateShoppingItemsString = function (shoppingList) {
+    const items = shoppingList.map((item) => generateItemElement(item));
+    return items.join('');
+  };
+  
+  const generateError = function (message) {
+    return `
+        <section class="error-content">
+          <button id="cancel-error">X</button>
+          <p>${message}</p>
+        </section>
+      `;
+  };
+  
+  const renderError = function () {
+    if (store.error) {
+      const el = generateError(store.error);
+      $('.error-container').html(el);
+    } else {
+      $('.error-container').empty();
     }
-    
+  };
+  
+  const handleCloseError = function () {
+    $('.error-container').on('click', '#cancel-error', () => {
+      store.setError(null);
+      renderError();
+    });
+  };
+
+function render(){
+    renderError();
+    let items = [...store.items];
+    if(store.filter > 0){
+        items = items.filter(item =>  store.filter == item.rating);
+    }
     
 
     const bookmarkListItemsString = generateBookmarkItemsString(items);
@@ -41,41 +70,9 @@ function render(){
     
 }
 
-// function render2(){
-//     let filterby = filterD();
-//     let items = store.items;
-//     let itemsF = items.filter(item => filterby === item.rating);
-//     const bookmarkListItemsString = generateBookmarkItemsString(itemsF);
-//     $('.bookmarksList').html(bookmarkListItemsString);
-// }
-
-// function filterB(){
-//     $('select').change(function(){
-//         store.filter = $('select option:selected').val();
-//         console.log(store.filter);
-//     })
-//     render();
-// }
-
-// function filterC(){
-//     $('main').on('click','select', function(event){
-//         console.log(event.currentTarget);
-//         let filterby = $('select option:selected').val();
-//         console.log(filterby);
-//         console.log(store.items.filter(item => item.rating === filterby));
-//         return store.items.filter(item => item.rating === filterby)
-//     })
-// }
-
-// function selectChange(val){
-//     $('selectForm').submit();
-//     console.log($('selectForm').submit().val());
-//     return $('selectForm').submit().val()
-// }
-
 function filterD(){
     $('select').on('change', function() {
-        store.filter = this.value;
+        store.filter = parseInt(this.value);
         console.log(store.filter);
         render();
         return this.value 
@@ -88,46 +85,54 @@ function newBookmarkClick(){
         $('main').append(
             `<form id="js-form">
             <label>Add new bookmark:</label><br>
-            <input type="text" name="inputUrl" class="inputUrl" placeholder="https://www.example.com/"><br><br>
+            <input type="text" name="inputUrl" class="inputUrl" placeholder="https://www.example.com/" required><br><br>
             
             <div class="div">
-                <input type="text" name="inputTitle" class="inputTitle" placeholder="title">
+                <input type="text" name="inputTitle" class="inputTitle" placeholder="title" required>
                 <ul class="rating">
                     <li>
                         Rating
                     </li>
                     <li>
-                        <input type="radio" id="5" name="star" value="5">
+                        <input type="radio" id="5" name="star" value="5" class="radio_input" required>
                         <label for="5">5 ★</label>
                     </li>
                     <li>
-                        <input type="radio" id="4" name="star" value="4">
+                        <input type="radio" id="4" name="star" value="4" class="radio_input" required>
                         <label for="4">4 ★</label>
                     </li>
                     <li>
-                        <input type="radio" id="3" name="star" value="3">
+                        <input type="radio" id="3" name="star" value="3" class="radio_input" required>
                         <label for="3">3 ★</label>
                     </li>
                     <li>
-                        <input type="radio" id="2" name="star" value="5">
+                        <input type="radio" id="2" name="star" value="5" class="radio_input" required>
                         <label for="2">2 ★</label>
                     </li>
                     <li>
-                        <input type="radio" id="1" name="star" value="1">
+                        <input type="radio" id="1" name="star" value="1" class="radio_input" required>
                         <label for="1">1 ★</label>
                     </li>
                 </ul>
-                <textarea name="description" rows="10" cols="40" placeholder="Add a description(Optional)"></textarea>
+                <textarea name="description" required rows="10" cols="40" placeholder="Add a description" ></textarea>
             </div>
             <div class="containerBtn">
-                <button class="button" type="reset">Cancel</button>
+                <button id="Cancel" class="button" type="reset">Cancel</button>
                 <button id="submitBtn" class="button" type="submit">Create</button>
             </div>
         </form>`
         );
     })
 }
-//action="https://thinkful-list-api.herokuapp.com/virel/bookmarks" method="POST"
+
+function handleCancel(){
+    $('main').on('click','#Cancel', function (event) {
+        event.preventDefault();
+        $('#js-form').remove();
+        $('section').removeClass('hidden');
+    })
+}
+
 function handleNewItemSubmit(){
     $('main').on('click','#submitBtn', function (event) {
         event.preventDefault();
@@ -138,11 +143,33 @@ function handleNewItemSubmit(){
         const newItemRating = $('input:radio[name=star]:checked').val();
         const newItemDescription = $('textarea').val();
         $('textarea').val("");
+        $("textarea").rules( "add", {
+            required: true,
+            minlength: 1,
+            messages: {
+              required: "Required input",
+            }
+          });
+          $(".radio_input").rules( "add", {
+            required: true,
+            messages: {
+              required: "Required input",
+            }
+          });
+        $("#js-form").validate();
+        // $("#js-form").validate({rules:{
+        //     description:{
+        //         required:true,
+        //     },
+        //     star:{
+        //         required:true,
+        //     }
+        // }})
         api.createItem(newItemTitle,newItemUrl,newItemDescription,newItemRating)
             .then((newItem) => {
                 store.addItem(newItem);
                 console.log(newItem);
-                $('#js-form').addClass('hidden');
+                $('#js-form').remove();
                 $('section').removeClass('hidden');
                 render();
             })
@@ -208,9 +235,8 @@ function bindEventListeners(){
     handleNewItemSubmit();
     handleItemExpansion();
     handleDeleteItemClicked();
-    //filterB();
-    //filterC;
-    //selectChange();
+    handleCancel();
+    handleCloseError();
     filterD();
 }   
 export default{
